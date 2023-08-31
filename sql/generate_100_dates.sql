@@ -1,11 +1,18 @@
-WITH RECURSIVE dates AS (
-    SELECT current_date::date AS date
+WITH RECURSIVE
+  dates AS (
+    SELECT
+      CURDATE () AS date
     UNION ALL
-    SELECT (
-      date + (FLOOR(RANDOM() * 6) + 2) * INTERVAL '1 day')::date
-    FROM dates
-    WHERE (date + (FLOOR(RANDOM() * 6) + 2) * INTERVAL '1 day')::date <= current_date + INTERVAL '100 day'
-)
-SELECT date
-FROM dates
-LIMIT 100;
+    SELECT
+      DATE_ADD (date, INTERVAL FLOOR(RAND () * 6) + 2 DAY)
+    FROM
+      dates
+    WHERE
+      DATE_ADD (date, INTERVAL FLOOR(RAND () * 6) + 2 DAY) <= CURDATE () + INTERVAL 100 DAY
+  )
+SELECT
+  date
+FROM
+  dates
+LIMIT
+  100;
